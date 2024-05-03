@@ -43,7 +43,7 @@
 	<distributionManagement>
 		<repository>
 			<id>github</id>
-			<name>GitHub Packages</name>
+			<name>mrsxs</name>
 			<url>https://maven.pkg.github.com/mrsxs/mvn-repo</url>
 		</repository>
 	</distributionManagement>
