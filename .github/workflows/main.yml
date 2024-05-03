@@ -35,7 +35,7 @@ jobs:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USERNAME }}
           password: ${{ secrets.SERVER_PASSWORD }}
-          source: "target/Actions-1.1.1.jar"
+          source: "/Actions-1.1.1.jar"
           target: "/root/java"
 
       - name: Run jar file on server
