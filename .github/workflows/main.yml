@@ -36,7 +36,7 @@ jobs:
           username: ${{ secrets.SERVER_USERNAME }}
           password: ${{ secrets.SERVER_PASSWORD }}
           source: "target/Actions-1.1.1.jar"
-          target: "/path/to/your/server/directory"
+          target: "/root/java"
 
       - name: Run jar file on server
         uses: appleboy/ssh-action@master
