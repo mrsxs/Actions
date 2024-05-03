@@ -5,8 +5,8 @@
     <servers>
         <server>
             <id>com.song</id>
-            <username>song3100880856@gmail.com</username>
-            <password>${env.GITHUB_TOKEN}</password>
+            <username>mrsxs</username>
+            <password>${secrets.TOKEN}</password>
         </server>
     </servers>
 </settings>
