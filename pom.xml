@@ -30,8 +30,8 @@
 	</dependencies>
 	<distributionManagement>
 		<repository>
-			<id>github</id>
-			<name>GitHub Packages</name>
+			<id>com.song</id>
+			<name>actions</name>
 			<url>https://maven.pkg.github.com/mrsxs/Actions</url>
 		</repository>
 	</distributionManagement>
