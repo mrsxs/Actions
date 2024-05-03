@@ -7,13 +7,16 @@
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>3.2.5</version>
 		<relativePath/> <!-- lookup parent from repository -->
+
 	</parent>
+
 	<groupId>com.example</groupId>
 	<artifactId>Actions</artifactId>
 	<version>1.1.1</version>
 	<name>demo</name>
 	<description>demo</description>
 	<properties>
+		<github.global.server>github</github.global.server>
 		<java.version>17</java.version>
 	</properties>
 	<dependencies>
@@ -28,21 +31,20 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-	<distributionManagement>
-		<repository>
-			<id>com.song</id>
-			<name>actions</name>
-			<url>https://maven.pkg.github.com/mrsxs/Actions</url>
-		</repository>
-	</distributionManagement>
+
 	<build>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
-
 		</plugins>
 	</build>
-
+	<distributionManagement>
+		<repository>
+			<id>github</id>
+			<name>GitHub Packages</name>
+			<url>https://maven.pkg.github.com/mrsxs/mvn-repo</url>
+		</repository>
+	</distributionManagement>
 </project>
