@@ -1,12 +1,12 @@
-# This workflow will build a package using Maven, upload it to a server and then run the jar file
-# For more information see: https://github.com/actions/setup-java/blob/main/docs/advanced-usage.md#apache-maven-with-a-settings-path
-
 name: Maven Package and Deploy
 
 on:
   workflow_dispatch:
   release:
     types: [created]
+  push:
+    branches:
+      - main
 
 jobs:
   build:
@@ -38,10 +38,18 @@ jobs:
           source: "target/Actions-1.1.1.jar"
           target: "/root/java"
 
+      - name: Stop running Java applications on server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          password: ${{ secrets.SERVER_PASSWORD }}
+          script: pkill -f "/www/server/java/jdk-20.0.2/bin/java -jar /root/java/Actions-1.1.1.jar"
+
       - name: Run jar file on server
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USERNAME }}
           password: ${{ secrets.SERVER_PASSWORD }}
-          script: /www/server/java/jdk-20.0.2/bin/java -jar /root/java/target/Actions-1.1.1.jar &
+          script: /www/server/java/jdk-20.0.2/bin/java -jar /root/java/Actions-1.1.1.jar &
