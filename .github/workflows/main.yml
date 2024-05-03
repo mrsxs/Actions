@@ -53,4 +53,7 @@ jobs:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USERNAME }}
           password: ${{ secrets.SERVER_PASSWORD }}
-          script: nohup /www/server/java/jdk-20.0.2/bin/java -jar /root/java/target/Actions-1.1.1.jar &
+          script: |
+            nohup /www/server/java/jdk-20.0.2/bin/java -jar /root/java/target/Actions-1.1.1.jar > /root/java/app.log 2>&1 &
+            disown
+         
