@@ -59,4 +59,4 @@ jobs:
       - name: 发布 Maven 项目到 GitHub Packages
         run: mvn deploy -s $GITHUB_WORKSPACE/settings.xml
         env:
-          GITHUB_TOKEN: ${{ secrets.token }}
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}
