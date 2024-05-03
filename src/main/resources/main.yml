@@ -29,6 +29,14 @@ jobs:
       - name: 构建 Maven 项目
         run: mvn -B package --file pom.xml
 
+      - name: 停止 Java 应用程序
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          password: ${{ secrets.SERVER_PASSWORD }}
+          script: kill -9 $(ps -ef | grep Actions-1.1.1.jar | grep -v grep | awk '{print $2}') || true
+
       - name: 上传 Jar 文件到服务器
         uses: appleboy/scp-action@master
         with:
@@ -45,4 +53,6 @@ jobs:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USERNAME }}
           password: ${{ secrets.SERVER_PASSWORD }}
-          script: /www/server/java/jdk-20.0.2/bin/java -jar /root/java/target/Actions-1.1.1.jar &
+          script: |
+            nohup /www/server/java/jdk-20.0.2/bin/java -jar /root/java/target/Actions-1.1.1.jar > /root/java/app.log 2>&1 &
+            disown
