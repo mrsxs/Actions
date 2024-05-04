@@ -7,7 +7,6 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -15,41 +14,32 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+
       - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
           java-version: '17'
           distribution: 'temurin'
-          server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
-          settings-path: ${{ github.workspace }} # location for the settings.xml file
+          server-id: github
+          settings-path: ${{ github.workspace }}
 
       - name: 构建 Maven 项目
         run: mvn -B package --file pom.xml
 
-      - name: 停止 Java 应用程序
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.SERVER_HOST }}
-          username: ${{ secrets.SERVER_USERNAME }}
-          password: ${{ secrets.SERVER_PASSWORD }}
-          script: kill -9 $(ps -ef | grep Actions-1.1.1.jar | grep -v grep | awk '{print $2}') || true
+      - name: Build Docker Image
+        run: |
+          docker build -t your-registry/your-image:1.1.1 .
+          echo ${{ secrets.DOCKER_PASSWORD }} | docker login your-registry.com -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+          docker push your-registry/your-image:1.1.1
 
-      - name: 上传 Jar 文件到服务器
-        uses: appleboy/scp-action@master
-        with:
-          host: ${{ secrets.SERVER_HOST }}
-          username: ${{ secrets.SERVER_USERNAME }}
-          password: ${{ secrets.SERVER_PASSWORD }}
-          source: "target/Actions-1.1.1.jar"
-          target: "/root/java"
-
-
-      - name: 运行 Java 应用程序
+      - name: Deploy Docker Container
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USERNAME }}
           password: ${{ secrets.SERVER_PASSWORD }}
           script: |
-            nohup /www/server/java/jdk-20.0.2/bin/java -jar /root/java/target/Actions-1.1.1.jar > /root/java/app.log 2>&1 &
-            disown
+            docker pull your-registry/your-image:1.1.1
+            docker stop my-app || true
+            docker rm my-app || true
+            docker run -d --name my-app -p 8080:8080 your-registry/your-image:1.1.1
