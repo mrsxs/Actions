@@ -53,8 +53,8 @@ jobs:
           username: ${{ secrets.SERVER_USERNAME }}
           password: ${{ secrets.SERVER_PASSWORD }}
           script: |
-            docker pull mrsxs/jar/actios:1.1.1
+            docker pull mrsxs/jar:1.1.1
             docker stop my-app || true
             docker rm my-app || true
-            docker run -d --name my-app -p 8080:8080 mrsxs/jar/1.1.1
+            docker run -d --name actios -p 8080:8080 mrsxs/jar:1.1.1
             
